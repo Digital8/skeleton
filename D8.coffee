@@ -6,7 +6,7 @@
  *
  * @package   Digital8
  * @version   2.0.1
- * @author    Brendan Scarvell <bscarvell@digital8.com.au>
+ * @author    Brendan Scarvell <brendan@digital8.com.au>
  * @copyright Copyright (c) 2012 - Current
  ###
 mysql = require 'mysql'
@@ -40,3 +40,14 @@ module.exports = class D8
       when 'class' then @class[file] = require "./lib/classes/#{file}"
       when 'helper' then @helpers[file] = require "./lib/helpers/#{file}"
       else console.log "Warning: No function to load #{type}: #{file}"
+      
+  @log = (msg) ->
+    date = new Date();
+    if arguments.length == 1
+      console.log msg
+    else
+      callback = arguments[1]
+      fs.appendFile @config.logFile, "[#{date.getDay()}/#{date.getMonth()}/#{date.getFullYear()}@#{date.getHours()}:#{date.getMinutes()}:#{date.getSeconds()}] - #{msg}\r\n", (err) ->
+        if err then console.log "LOG ERROR: #{err}"
+        callback()
+      

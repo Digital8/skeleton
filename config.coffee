@@ -8,7 +8,9 @@
  * @author    Brendan Scarvell <bscarvell@digital8.com.au>
  * @copyright Copyright (c) 2012 - Current
  ###
- 
+
+logDate = new Date();
+
 module.exports =
   globals:
     site:
@@ -17,9 +19,11 @@ module.exports =
   database:
     type    : 'mysql'
     host    : 'localhost'
-    user    : 'root'
+    user    : ''
     password: ''
-    name    : 'tfa'
-    prefix  : 'tfa_'
+    name    : ''
+    prefix  : ''
+  
+  logFile   : "./logs/#{logDate.getDay()}#{logDate.getMonth()}#{logDate.getFullYear()}.txt"
     
   port: 3000

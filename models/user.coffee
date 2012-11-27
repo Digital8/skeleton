@@ -3,8 +3,8 @@
  *
  * Handles all queries and actions to the database for the user
  *
- * @package   Digital8
- * @author    Brendan Scarvell <bscarvell@digital8.com.au>
+ * @package   Digital8 
+ * @author    Brendan Scarvell <brendan@digital8.com.au>
  * @copyright Copyright (c) 2012 - Current
  ###
 Model = require './baseModel'

@@ -4,7 +4,7 @@
  * Controller Template
  *
  * @package   Digital8
- * @author    Brendan Scarvell <bscarvell@digital8.com.au>
+ * @author    Brendan Scarvell <brendan@digital8.com.au>
  * @copyright Copyright (c) 2012 - Current
  ###
 d8 = require '../d8'
