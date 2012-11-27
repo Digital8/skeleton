@@ -4,6 +4,7 @@
  * Application Server
  *
  * @package   Digital8
+ * @version   2.0.1
  * @author    Brendan Scarvell <bscarvell@digital8.com.au>
  * @copyright Copyright (c) 2012 - Current
  ###
@@ -13,18 +14,7 @@ expressValidator = require 'express-validator'
 flashify = require 'flashify'
 
 # Include system core
-system = require './system'
-
-  
-# Load some helpers
-helpers = {}
-
-# Load global models
-models =
-  user: system.load.model 'user'
-
-classes = 
-  user: system.load.class 'user'
+d8 = require './d8'
 
 app = express()
 
@@ -40,10 +30,11 @@ app.configure ->
   app.use express.session()
   app.use flashify
   app.use express.static "#{__dirname}/public"
+  # Custom Middleware
   app.use (req,res,done) ->
     res.locals.session  = req.session
-    res.locals.globals = system.config.globals
-    res.locals.objUser = new classes.user [] # Empty user object
+    res.locals.globals = d8.config.globals
+    # res.locals.objUser = new classes.user [] # Empty user object
     
     # if req.session.user_id?
     #   models.user.getUserById req.session.user_id, (err, results) ->
@@ -56,14 +47,14 @@ app.configure ->
     #         done()
     # else
     #   done()
-  
+    done()
   app.use app.router
   
-server = app.listen system.config.port
+server = app.listen d8.config.port
 
 
 # Application routes
 require('./routes')(app)
 
-console.log "Server started on port #{system.config.port}"
+console.log "Server started on port #{d8.config.port}"
 

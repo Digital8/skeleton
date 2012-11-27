@@ -10,28 +10,26 @@
 
 d8 = require '../d8'
 
-d8.load('model','users')
+d8.load('helper','restrictTo')
+d8.load('model','user')
 
-# GET
-exports.index = (req,res) ->
-  #d8.models['users'].find id: 1, (err, results) ->
-  if res.locals.objUser.isAuthed() then res.redirect '/dashboard' else res.render 'index'
+module.exports = 
+  index: (req,res) ->
+    d8.models['user'].findById 1, (err, results) ->
+      if err
+        res.send err
+      else
+        res.send results
+    
+  view: (req,res) ->
 
-# GET    
-exports.view = (req,res) ->
+  add: (req,res) ->
 
-# GET
-exports.add = (req,res) ->
+  create: (req,res) ->
 
-# PUT
-exports.create = (req,res) ->
+  edit: (req,res) ->
 
-# GET
-exports.edit = (req,res) ->
+  update: (req,res) ->
 
-# POST
-exports.update = (req,res) ->
-
-# DEL
-exports.destroy = (req,res) ->
+  destroy: (req,res) ->
 

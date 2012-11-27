@@ -16,10 +16,10 @@ module.exports =
 
   database:
     type    : 'mysql'
-    host    : '[change me]'
-    user    : '[change me]'
-    password: '[change me]'
-    name    : '[change me]'
-    prefix  : '[change me]'
+    host    : 'localhost'
+    user    : 'root'
+    password: ''
+    name    : 'tfa'
+    prefix  : 'tfa_'
     
   port: 3000

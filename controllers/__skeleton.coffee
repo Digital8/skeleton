@@ -7,17 +7,19 @@
  * @author    Brendan Scarvell <bscarvell@digital8.com.au>
  * @copyright Copyright (c) 2012 - Current
  ###
+d8 = require '../d8'
 
-exports.index = (req,res) ->
-  
-exports.view = (req,res) ->
-  
-exports.add = (req,res) ->
+module.exports = 
+  index: (req,res) ->
 
-exports.create = (req,res) ->
+  view: (req,res) ->
 
-exports.edit = (req,res) ->
-  
-exports.update = (req,res) ->
-  
-exports.destroy = (req,res) ->
+  add: (req,res) ->
+
+  create: (req,res) ->
+
+  edit: (req,res) ->
+
+  update: (req,res) ->
+
+  destroy: (req,res) ->
