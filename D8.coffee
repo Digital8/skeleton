@@ -49,5 +49,4 @@ module.exports = class D8
       callback = arguments[1]
       fs.appendFile @config.logFile, "[#{date.getDay()}/#{date.getMonth()}/#{date.getFullYear()}@#{date.getHours()}:#{date.getMinutes()}:#{date.getSeconds()}] - #{msg}\r\n", (err) ->
         if err then console.log "LOG ERROR: #{err}"
-        callback()
-      
+        callback()    

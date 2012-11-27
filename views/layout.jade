@@ -9,8 +9,13 @@ head
     script(src="/scripts/jquery.js")
     script(src="/scripts/bootstrap.js")
     script(src="/scripts/jquery.timeago.js")
+    script(src="/socket.io/socket.io.js")
     
-    
+    script
+      var socket = io.connect('#{socketio.url}', !{JSON.stringify(socketio.options)});
+      socket.on("reconnect", function(){
+        window.location = window.location;
+      });
     style
       body {
         padding-top: 60px;
@@ -24,42 +29,14 @@ head
             li.dropdown(id="preview-menu")
               a(class="dropdown-toggle",data-toggle="dropdown",href="#") 
                 i.icon-user.icon-white 
-                | &nbsp; #{objUser.alias} 
+                | &nbsp; Test &nbsp;
                 b.caret
               ul.dropdown-menu
-                if (!objUser.isAuthed())
-                  if(modules.login == true)
-                    li
-                      a(href="/login",id="login") Login
-                    li.divider
-                  if(modules.register == true)
-                    li
-                      a(href="/sign-up") Sign Up
-                else
-                  li
-                    a(href="/user/#{objUser.id}/edit")
-                      i.icon-wrench
-                      | &nbsp; Account Settings
-                      
-                    a(href="#")
-                      i.icon-list
-                      | &nbsp; My Questions
-                      
-                    a(href="/issues")
-                      i.icon-bookmark
-                      | &nbsp; My Issues
-                      
-                    if (objUser.isStaff())
-                      a(href="/administration")
-                        i.icon-lock
-                        | &nbsp; Administration
-                      
-                  li.divider
-                  li
-                    
-                    a(href="/logout")
-                      i.icon-off
-                      | &nbsp; Logout
+                li
+                  a(href="/login",id="login") Login
+                li.divider
+                li
+                  a(href="/sign-up") Sign Up
                   
     div(class="container")
       block content

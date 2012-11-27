@@ -15,6 +15,8 @@ module.exports =
   globals:
     site:
       name: 'Digital8 Skeleton'
+  
+  viewExt: '.jade'
 
   database:
     type    : 'mysql'
@@ -25,5 +27,13 @@ module.exports =
     prefix  : ''
   
   logFile   : "./logs/#{logDate.getDay()}#{logDate.getMonth()}#{logDate.getFullYear()}.txt"
+  
+  socketio  :
+    client : 
+      url  :  'http://localhost/'
+      options:
+        'reconnect': true,
+        'reconnection delay': 500
+        'max reconnection attempts': 50
     
   port: 3000

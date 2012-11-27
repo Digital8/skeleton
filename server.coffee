@@ -34,6 +34,7 @@ app.configure ->
   # Custom Middleware
   app.use (req,res,done) ->
     res.locals.globals = d8.config.globals
+    res.locals.socketio = d8.config.socketio.client
     done()
     
   app.use app.router
@@ -44,5 +45,12 @@ server = app.listen d8.config.port
 # Application routes
 require('./routes')(app)
 
+# socket.io
+io = require('socket.io').listen server
+io.set 'log level', 1
+
+io.sockets.on 'connection', (socket) ->
+  console.log 'new connection'
+  
 console.log "Server started on port #{d8.config.port}"
 

@@ -13,16 +13,17 @@ d8 = require '../d8'
 
 module.exports = 
   index: (req,res) ->
+    res.render 'index'
     
-  view: (req,res) ->
-
-  add: (req,res) ->
-
-  create: (req,res) ->
-
-  edit: (req,res) ->
-
-  update: (req,res) ->
-
-  destroy: (req,res) ->
+  # view: (req,res) ->
+  # 
+  # add: (req,res) ->
+  # 
+  # create: (req,res) ->
+  # 
+  # edit: (req,res) ->
+  # 
+  # update: (req,res) ->
+  # 
+  # destroy: (req,res) ->
 
