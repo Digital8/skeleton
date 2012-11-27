@@ -8,10 +8,13 @@
  * @copyright Copyright (c) 2012 - Current
  ###
 
-system = require '../system'
+d8 = require '../d8'
+
+d8.load('model','users')
 
 # GET
 exports.index = (req,res) ->
+  #d8.models['users'].find id: 1, (err, results) ->
   if res.locals.objUser.isAuthed() then res.redirect '/dashboard' else res.render 'index'
 
 # GET    

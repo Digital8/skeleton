@@ -3,7 +3,8 @@
  *
  * Application Settings
  *
- * @package   Digital8
+ * @package   Digital8 <http://digital8.com.au>
+ * @version   2.0.1
  * @author    Brendan Scarvell <bscarvell@digital8.com.au>
  * @copyright Copyright (c) 2012 - Current
  ###
@@ -20,17 +21,5 @@ module.exports =
     password: '[change me]'
     name    : '[change me]'
     prefix  : '[change me]'
-  
-  modules:
-    login     : true
-    register  : true
-    questions : true
-  
-  acl:
-    banned : 102
-    member : 103
-    expert : 104
-    staff  : 105
-    admin  : 106
     
   port: 3000

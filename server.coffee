@@ -43,20 +43,19 @@ app.configure ->
   app.use (req,res,done) ->
     res.locals.session  = req.session
     res.locals.globals = system.config.globals
-    res.locals.modules = system.config.modules ? {} # If modules exist, allow views to check its status
     res.locals.objUser = new classes.user [] # Empty user object
     
-    if req.session.user_id?
-      models.user.getUserById req.session.user_id, (err, results) ->
-        if err then throw err
-        if results.length > 0
-          res.locals.objUser = new classes.user results.pop()
-          if res.locals.objUser.isBanned()
-            res.render 'errors/banned'
-          else
-            done()
-    else
-      done()
+    # if req.session.user_id?
+    #   models.user.getUserById req.session.user_id, (err, results) ->
+    #     if err then throw err
+    #     if results.length > 0
+    #       res.locals.objUser = new classes.user results.pop()
+    #       if res.locals.objUser.isBanned()
+    #         res.render 'errors/banned'
+    #       else
+    #         done()
+    # else
+    #   done()
   
   app.use app.router
   
