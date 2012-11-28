@@ -14,7 +14,7 @@ logDate = new Date();
 module.exports =
   globals:
     site:
-      name: 'Digital8 Skeleton'
+      name: 'Digital8 Framework'
   
   viewExt: '.jade'
 
