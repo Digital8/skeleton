@@ -41,6 +41,10 @@ module.exports = class D8
       when 'helper' then @helpers[file] = require "./lib/helpers/#{file}"
       else console.log "Warning: No function to load #{type}: #{file}"
       
+  # Render just a view     
+  @render = (view) ->
+    return (req, res) -> res.render view    
+          
   @log = (msg) ->
     date = new Date();
     if arguments.length == 1

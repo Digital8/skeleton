@@ -50,7 +50,6 @@ io = require('socket.io').listen server
 io.set 'log level', 1
 
 io.sockets.on 'connection', (socket) ->
-  
-  
+    
 console.log "Server started on port #{d8.config.port}"
 

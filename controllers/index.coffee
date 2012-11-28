@@ -12,9 +12,8 @@
 d8 = require '../d8'
 
 module.exports = 
-  index: (req,res) ->
-    res.render 'index'
-    
+  index: d8.render('index')
+  
   # view: (req,res) ->
   # 
   # add: (req,res) ->
