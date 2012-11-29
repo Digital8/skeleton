@@ -24,181 +24,55 @@ module.exports = class Model
   constructor: ->
     @db = db
     @column_prefix = this.constructor.name.toLowerCase() + '_'
-    @table = "#{@db.prefix}#{this.constructor.name.toLowerCase()}s"
-
-  ### 
-   * @name findById
-   * Searches the database table for a match by ID
-   *
-   * @param {Integer} id
-   * @param {Function} callback
-  ###
-  
-  findById: (id, callback) ->
-    query = "SELECT * FROM #{@table} WHERE #{@column_prefix}id = ?"
-
-    # Perform database query
-    @db.query query, [id], (err, results) -> callback err, results
+    @success = ->
+    @error = ->
+    @done = ->
+      
+    if arguments.length is 1 
+      @table = "#{@db.prefix}#{arguments[0]}"
+    else
+      @table = "#{@db.prefix}#{this.constructor.name.toLowerCase()}s"
 
 
   ### 
    * @name find
    * Searches the database table for a result by provided credentials
    *
-   * @param {Integer} id
-   * @param {Object} options {Optional}
-   * 
-   *  - `conditions`  Array of fields for conditions
-   *  - `values`  Array of values for the previous conditions
-   *  - `limit` String of limit range. eg - limit: '5 10'
-   *  - `order` String of field name and direction. eg - order: 'user_created DESC'
-   *
-   * @param {Function} callback
   ###
   
-  find: (fields, options, values) ->
-    fields = fields.join ','
-    query = "SELECT #{fields} FROM #{@table}"
-    
-    # Check if we're passing any options
-    if arguments.length == 3
-      conditions = arguments[1]
-      callback = arguments[2]
-
-      # Check if we're passing any conditions
-      if options.conditions.length >= 1
-        i = 0
-        # loop through all conditions
-        for [i..(options.conditions.length - 1)]
-          # Check if to use WHERE or comparison operators
-          if i is 0 
-            query += " WHERE #{options.conditions[i].field} = ?"
-          else
-            if options.conditions[i].operator?
-              query += " #{options.conditions[i].operator} #{options.conditions[i].field} = ?"
-            else
-              query += " AND #{options.conditions[i].field} = ?"
-          i++
-
-      # Check if we're to order results
-      if options.order isnt undefined
-        query += " ORDER BY options.order "
-
-      # Any limits
-      if options.limit isnt undefined
-        query += " LIMIT #{options.limit} "
-    else
-      options = {}
-
-    options.values ?= []      
-
-    # Execute query
-    @db.query query, options.values, (err, results) -> callback err, results
-
-
-
-  ### 
-   * @name findOne
-   * Searches the database table for a ONE result by provided credentials
-   *
-   * @param {Integer} id
-   * @param {Object} options {Optional}
-   * 
-   *  - `conditions`  Array of fields for conditions
-   *  - `values`  Array of values for the previous conditions
-   *  - `order` String of field name and direction. eg - order: 'user_created DESC'
-   *
-   * @param {Function} callback
-  ###
-
-  findOne: (fields, options, callback) -> 
-    fields = fields.join ','
-    query = "SELECT #{fields} FROM #{@table}"
-    
-    # Check if we're passing any options :)
-    if arguments.length == 3
-      options.values ?= []
-      conditions = arguments[1]
-      callback = arguments[2]
-
-      # Check if we're passing any conditions
-      if options.conditions.length >= 1
-        i = 0
-        # loop through all conditions
-        for [i..(options.conditions.length - 1)]
-          # Check if to use WHERE or comparison operators
-          if i is 0 
-            query += " WHERE #{options.conditions[i].field} = ?"
-          else
-            if options.conditions[i].operator?
-              query += " #{options.conditions[i].operator} #{options.conditions[i].field} = ?"
-            else
-              query += " AND #{options.conditions[i].field} = ?"
-          i++
-      # Check if we're doing an order by
-      if options.order isnt undefined
-        query += " ORDER BY options.order "
-    else
-      options = {}
-
-      query += " LIMIT 1 "
-
-    options.values ?= []
-
-    # execute query and return resu;ts
-    @db.query query, options.values, (err, results) -> callback err, results
-        
+  find: (opts,callback) ->
+    values = []
+    if typeof opts is 'number'
+      values.push opts
+      query = "SELECT * FROM #{@table} WHERE #{@column_prefix}id = ?"
       
-
-  ### 
-   * @name findAll
-   * Searches the database table for all results by provided credentials
-   *
-   * @param {Integer} id
-   * @param {Object} options {Optional}
-   * 
-   *  - `conditions`  Array of fields for conditions
-   *  - `values`  Array of values for the previous conditions
-   *  - `order` String of field name and direction. eg - order: 'user_created DESC'
-   *
-   * @param {Function} callback
-  ###
-
-  findAll: (fields, options, callback) -> 
-    fields = fields.join ','
-    query = "SELECT #{fields} FROM #{@table}"
-    
-    # Check if we're passing any options 
-    if arguments.length == 3
-      conditions = arguments[1]
-      callback = arguments[2]
-
-      # Check if we're passing any conditions
-      if options.conditions.length >= 1
-        i = 0
-        # Loop through all conditions
-        for [i..(options.conditions.length - 1)]
-          # Do we have to place original WHERE
-          if i is 0 
-            query += " WHERE #{options.conditions[i].field} = ?"
-          else
-            if options.conditions[i].operator?
-              query += " #{options.conditions[i].operator} #{options.conditions[i].field} = ?"
-            else
-              query += " AND #{options.conditions[i].field} = ?"
-          i++
-
-      # Order out any output?
-      if options.order isnt undefined
-        query += " ORDER BY options.order "
     else
-      options = {}
-
-    options.values ?= []
+      query = 'SELECT '
+      
+      if opts.fields? 
+        query += opts.fields.join(', ')
+        query += " FROM #{@table}"
+      else 
+        query += "*  FROM #{@table}"
+      
+      if opts.where? 
+        query += ' WHERE '
+        keys = []
+        Object.keys(opts.where).forEach (obj) ->
+          if obj.match /[\<\>]|like/
+            keys.push "#{obj} ?"
+          else
+            keys.push "#{obj} = ?"
+          values.push opts.where[obj]
+            
+        query += keys.join(' AND ')
+          
     # Execute query
-    @db.query query, options.values, (err, results) -> callback err, results
-
-
+    console.log query
+    console.log values
+    @db.query query, values, (err, results) ->
+      if results.length is 1 then results = results.pop()
+      callback err, results
 
   ### 
    * @name insert
@@ -265,7 +139,9 @@ module.exports = class Model
     query += " WHERE #{@column_prefix}id = ?"
     
     # Perform query
-    @db.query query, values, (err, results) -> callback err, results
+  
+    @db.query query, values, (err, results) ->
+      console.log results
 
 
 
@@ -301,3 +177,5 @@ module.exports = class Model
       query = "UPDATE #{@table} SET #{@column_prefix}deleted = true WHERE #{@column_prefix}}id = ?"
       # Perform query
       @db.query query, [id], (err, results) -> callback err, results
+      
+  @success = (callback) -> return (err, results) -> callback(results)
